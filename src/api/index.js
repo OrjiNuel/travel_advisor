@@ -1,11 +1,9 @@
 import axios from 'axios';
 
-const URL = 'https://travel-advisor.p.rapidapi.com/restaurants/list-in-boundary'
-
-export const getPlacesData = async (sw, ne) => {
+export const getPlacesData = async (type, sw, ne) => {
 
     try {
-        const { data: { data } } = await axios.get(URL, {
+        const { data: { data } } = await axios.get(`https://travel-advisor.p.rapidapi.com/${type}/list-in-boundary`, {
             params: {
                 bl_latitude: sw.lat,
                 bl_longitude: sw.lng,
@@ -14,7 +12,7 @@ export const getPlacesData = async (sw, ne) => {
             
               },
               headers: {
-                'X-RapidAPI-Key': 'c674103964msh32f3600d0294e59p1f9154jsn8e71599d2e15',
+                'X-RapidAPI-Key': process.env.REACT_APP_RAPIDAPI_KEY,
                 'X-RapidAPI-Host': 'travel-advisor.p.rapidapi.com'
               }
         });
@@ -22,5 +20,21 @@ export const getPlacesData = async (sw, ne) => {
         return data;
     } catch (error) {
         console.log(error)
+    }
+}
+
+export const getWeatherData = async (lat, lng) => {
+    try {
+        const { data } = await axios.get('https://open-weather13.p.rapidapi.com/city/landon', {
+            params: { lon: lng, lat: lat },
+            headers: {
+                'X-RapidAPI-Key': process.env.REACT_APP_RAPIDAPI_KEY,
+                'X-RapidAPI-Host': 'open-weather13.p.rapidapi.com'
+            }
+        });
+
+        return data;
+    } catch (error) {
+        console.log(error);
     }
 }
